@@ -1,8 +1,9 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiFillCaretDown, AiOutlineMessage } from "react-icons/ai";
 import { Dropdown } from 'antd';
 import { database } from './database';
+import noData from './image/no__data__3.png'
 
 const items  = [
   {
@@ -40,9 +41,10 @@ const App = () => {
     setCurrentIndex(index === currentIndex ? null: index)
   }
 
-// useEffect(() => {
-//   handleSearch()
-// },[])
+useEffect(() => {
+  handleSearch()
+  sortDatabase(database)
+},[])
 
   const handleSearch = () => {
     const results = database.filter((data) =>
@@ -66,7 +68,7 @@ const App = () => {
         <button  onClick={handleSearch}>Search</button>{' '}
       </div>
       <div className='list__container'>
-       {(searchResults.length > 0 ? searchResults :  sortDatabase(database)).map((data: any, index: number) => (
+       {searchResults.length === 0 ? <span className='no__data'><img src={noData} alt='no data'/></span> : (searchResults.length > 0 ? searchResults :  sortDatabase(database)).map((data: any, index: number) => (
               <div
                 className="list__item-expandable"
                 onClick={() => handleClick(index)}
